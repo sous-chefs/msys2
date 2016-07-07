@@ -1,0 +1,7 @@
+name 'msys'
+maintainer 'The Authors'
+maintainer_email 'you@example.com'
+license 'all_rights'
+description 'Installs/Configures msys'
+long_description 'Installs/Configures msys'
+version '0.1.0'
