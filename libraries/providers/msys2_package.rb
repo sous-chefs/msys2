@@ -1,17 +1,11 @@
-require 'chef/provider/package'
-require 'chef/resource/package'
-require 'chef/mixin/command'
-require 'chef/platform'
-
 class Chef
   class Provider
     class Package
       class Msys2 < Chef::Provider::Package
-        include Chef::Mixin::ShellOut
-        include ::Msys2::Helper
-
-        provides :package, platform: 'windows'
+        provides :package, os: 'windows', override: true
         provides :msys2_package, os: 'windows'
+
+        include ::Msys2::Helper
 
         def load_current_resource
           @current_resource = Chef::Resource::Package.new(@new_resource_name)
@@ -83,6 +77,5 @@ class Chef
       end
     end
   end
-
-  Chef::Platform.set(platform: :windows, resource: :package, provider: Chef::Provider::Package::Msys2)
 end
+

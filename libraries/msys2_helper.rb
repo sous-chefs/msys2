@@ -1,7 +1,5 @@
 module Msys2
   module Helper
-    include Chef::Mixin::ShellOut
-
     def generate_msys_command(command)
       unless msystem_set?
         ENV['MSYSTEM'] = node['msys']['default_env']

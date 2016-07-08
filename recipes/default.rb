@@ -17,12 +17,16 @@ cookbook_file 'C:/msys2.js' do
   not_if { msys_installed? }
 end
 
-execute 'install msys' do
-  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys']['install_dir']}"
-  not_if { msys_installed? }
+#execute 'install msys' do
+#  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys']['install_dir']}"
+#  not_if { msys_installed? }
+#end
+
+execute 'ls -la' do
+  live_stream true
 end
 
-msys2_update 'run system update'
+# msys2_update 'run system update'
 
 file 'C:/msys2.exe' do
   action :delete
@@ -33,3 +37,6 @@ file 'C:/msys2.js' do
   action :delete
   only_if { ::File.exists?('C:/msys2.js') }
 end
+
+package 'git'
+package 'tig'
