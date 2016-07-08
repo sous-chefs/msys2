@@ -1,20 +1,24 @@
 require 'chef/provider/package'
-require 'chef/mixin/command'
 require 'chef/resource/package'
+require 'chef/mixin/command'
+require 'chef/platform'
 
 class Chef
   class Provider
     class Package
-      class Msys < Chef::Provider::Package
-        provides :package, platform: "windows"
-        provides :msys_package, os: "windows"
+      class Msys2 < Chef::Provider::Package
+        include Chef::Mixin::ShellOut
+        include ::Msys2::Helper
+
+        provides :package, platform: 'windows'
+        provides :msys2_package, os: 'windows'
 
         def load_current_resource
           @current_resource = Chef::Resource::Package.new(@new_resource_name)
           @current_resource.package_name(@new_resource.package_name)
 
           Chef::Log.debug("#{new_resource} checking pacman for #{@new_resource.package_name}")
-          status = shell_out_with_timeout(run_msys_command("pacman -Qi #{@new_resource.package_name}"))
+          status = shell_out_with_timeout(generate_msys_command("pacman -Qi #{@new_resource.package_name}"))
           status.stdout.each_line do |line|
             case line
             when /^Version(\s?)*: (.+)$/
@@ -35,14 +39,14 @@ class Chef
 
           repos = %w{mingw64 mingw32 msys}
 
-          if ::File.exists?(convert_path("/etc/pacman.conf"))
-            pacman = ::File.read(convert_path("/etc/pacman.conf"))
+          if ::File.exists?(convert_path('/etc/pacman.conf'))
+            pacman = ::File.read(convert_path('/etc/pacman.conf'))
             repos = pacman.scan(/\[(.+)\]/).flatten
           end
 
           package_repos = repos.map { |r| Regexp.escape(r) }.join("|")
 
-          status = shell_out_with_timeout(run_msys_command("pacman -Sl"))
+          status = shell_out_with_timeout(generate_msys_command("pacman -Sl"))
           status.stdout.each_line do |line|
             case line
             when /^(#{package_repos}) #{Regexp.escape(@new_resource.package_name)} (.+)$/
@@ -61,44 +65,24 @@ class Chef
           @candidate_version
         end
 
-        def install_package(name, version)
-          shell_out_with_timeout!(run_msys_command("pacman --sync --noconfirm --noprogressbar#{expand_options(@new_resource.options)} #{name}"))
+        def install_package(name, _version)
+          shell_out_with_timeout!(generate_msys_command("pacman --sync --noconfirm --noprogressbar#{expand_options(@new_resource.options)} #{name}"))
         end
 
-        def upgrade_package(name, version)
+        def upgrade_package(name, _version)
           install_package(name, version)
         end
 
-        def remove_package(name, version)
-          shell_out_with_timeout!(run_msys_command("pacman --remove --noconfirm --noprogressbar#{expand_options(@new_resource.options)} #{name}"))
+        def remove_package(name, _version)
+          shell_out_with_timeout!(generate_msys_command("pacman --remove --noconfirm --noprogressbar#{expand_options(@new_resource.options)} #{name}"))
         end
 
-        def purge_package(name, version)
+        def purge_package(name, _version)
           remove_package(name, version)
-        end
-
-        def run_msys_command(command)
-          unless msystem_set?
-            ENV['MSYSTEM'] = node['msys']['default_env']
-          end
-
-          return "#{node['msys']['install_dir']}/usr/bin/bash.exe -l -c #{command}"
-        end
-
-        def convert_path(path)
-          path.gsub(::File::SEPARATOR, ::File::ALT_SEPARATOR || '\\') if path
-        end
-
-        def msystem_set?
-          return ENV['MSYSTEM'].is_set?
-        end
-
-        def msys_installed?
-          return @is_installed if @is_installed
-          @is_installed = ::File.exists?(::File.join(node['msys']['install_dir'], "msys2.exe"))
-          return @is_installed
         end
       end
     end
   end
+
+  Chef::Platform.set(platform: :windows, resource: :package, provider: Chef::Provider::Package::Msys2)
 end
