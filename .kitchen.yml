@@ -3,20 +3,14 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_zero
-
-# Uncomment the following verifier to leverage Inspec instead of Busser (the
-# default verifier)
-# verifier:
-#   name: inspec
-#   format: doc
+  name: chef_solo
 
 platforms:
-  - name: ubuntu-16.04
-  - name: centos-7.2
+  - name: mwrock/Windows2012R2
+    transport:
+      name: winrm
 
 suites:
-  - name: default
+  - name: all
     run_list:
       - recipe[msys::default]
-    attributes:

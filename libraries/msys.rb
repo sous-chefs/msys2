@@ -35,8 +35,8 @@ class Chef
 
           repos = %w{mingw64 mingw32 msys}
 
-          if ::File.exists?(create_msys_path("/etc/pacman.conf"))
-            pacman = ::File.read(create_msys_path("/etc/pacman.conf"))
+          if ::File.exists?(convert_path("/etc/pacman.conf"))
+            pacman = ::File.read(convert_path("/etc/pacman.conf"))
             repos = pacman.scan(/\[(.+)\]/).flatten
           end
 
@@ -85,7 +85,7 @@ class Chef
           return "#{node['msys']['install_dir']}/usr/bin/bash.exe -l -c #{command}"
         end
 
-        def create_msys_path(path)
+        def convert_path(path)
           path.gsub(::File::SEPARATOR, ::File::ALT_SEPARATOR || '\\') if path
         end
 

@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe 'msys installed' do
+
+end
+
 describe 'msys::default' do
   # Serverspec examples can be found at
   # http://serverspec.org/resource_types.html
