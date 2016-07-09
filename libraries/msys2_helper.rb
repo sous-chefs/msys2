@@ -64,6 +64,10 @@ module Msys2
       ::File.directory?("#{node['msys2']['install_dir']}")
     end
 
+    def should_update?
+      node['msys2']['auto-update']
+    end
+
     def username
       ENV['username']
     end

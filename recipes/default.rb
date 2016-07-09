@@ -17,16 +17,19 @@ cookbook_file 'C:/msys2.js' do
   not_if { msys2_installed? }
 end
 
-#execute 'install msys' do
-#  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
-#  not_if { msys2_installed? }
-#end
+execute 'install msys' do
+  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
+  not_if { msys2_installed? }
+  provider Chef::Provider::Execute
+end
 
 execute 'ls -la' do
   live_stream true
 end
 
-# msys2_update 'run system update'
+msys2_update 'run system update' do
+  only_if { should_update? }
+end
 
 file 'C:/msys2.exe' do
   action :delete

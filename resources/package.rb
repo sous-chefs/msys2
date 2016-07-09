@@ -12,7 +12,7 @@ end
 property :package, String, name_attribute: true, required: true
 
 action :install do
-  run_command('pacman', '--sync', '--noconfirm', '--noprogressbar', "#{package}")
+  run_command('pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', "#{package}")
 end
 
 action :remove do
