@@ -46,24 +46,18 @@ module Msys2
       # Finish up the command array
       command.push("'" + msys_command.join(' ') + "'")
 
+      Chef::Log.debug("Running command: #{command.join(' ')} -> #{options}")
+
       # command.push(options)
       # TODO: Get rid of this string conversion when mixlib-shellout supports it for Windows: https://github.com/chef/mixlib-shellout/issues/125
       cmd = Mixlib::ShellOut.new(command.join(' '), options)
 
       if options.has_key?(:live_stream)
-        cmd.live_stream = live_stream
+        cmd.live_stream = options[:live_stream]
       end
 
       cmd.run_command
       cmd
-    end
-
-    def override_package?
-      node['msys2']['override_package']
-    end
-
-    def override_execute?
-      node['msys2']['override_execute']
     end
 
     def msys2_installed?
