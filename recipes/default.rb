@@ -10,16 +10,16 @@ Chef::Resource.send(:include, Msys2::Helper)
 remote_file 'C:/msys2.exe' do
   source 'http://downloads.sourceforge.net/project/msys2/Base/x86_64/msys2-x86_64-20160205.exe'
   action :create
-  not_if { msys_installed? }
+  not_if { msys2_installed? }
 end
 
 cookbook_file 'C:/msys2.js' do
-  not_if { msys_installed? }
+  not_if { msys2_installed? }
 end
 
 #execute 'install msys' do
-#  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys']['install_dir']}"
-#  not_if { msys_installed? }
+#  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
+#  not_if { msys2_installed? }
 #end
 
 execute 'ls -la' do
@@ -38,5 +38,6 @@ file 'C:/msys2.js' do
   only_if { ::File.exists?('C:/msys2.js') }
 end
 
-package 'git'
-package 'tig'
+msys2_package 'git'
+msys2_package 'tig'
+package 'nano'

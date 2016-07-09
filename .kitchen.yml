@@ -13,4 +13,4 @@ platforms:
 suites:
   - name: all
     run_list:
-      - recipe[msys::default]
+      - recipe[msys2::default]
