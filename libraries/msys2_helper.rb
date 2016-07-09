@@ -24,7 +24,7 @@ module Msys2
 
       # Handle env for MSYS2
       msys_env = {
-        'HOME' => ::File.join("#{node['msys2']['install_dir']}", 'home', username),
+        'HOME' => ::File.join("#{node['msys2']['install_dir']}", 'home', ENV['username']),
         'CHERE_INVOKING' => '1'
       }
 
