@@ -11,6 +11,12 @@ platforms:
       name: winrm
 
 suites:
-  - name: all
+  - name: install_msys2
     run_list:
       - recipe[msys2::default]
+  - name: install_with_packages
+    run_list:
+      - recipe[msys2::default]
+    attributes:
+      msys2:
+        packages: ['git', 'tig', 'wget']
