@@ -1,6 +1,17 @@
 module Msys2
   module Helper
     include Chef::Mixin::ShellOut
+    # Public: Runs a command within the MSYS2 environment.  Is run through the Mixlib::ShellOut handler
+    #
+    # *args       - The Array of the commands and arguments to be run
+    # returns     - The Fixnum value that's expected to be returned from the command
+    # env         - The Hash of environmental variables that expect to be set.  MSYS2 defaults are set.
+    # cwd         - The String of the directory the command should be run from.  Prepends a 'cd' command.
+    # live_stream - The Boolean choice to stream the output to the console
+    # sensitive   - The Boolean choice to prevent all output from reaching the console
+    # msystem     - The MSYS2 environment to run the command in (mingw64/mingw32/msys)
+    #
+    # Returns the result from the Mixlib::ShellOut object
     def run_command(*args, returns: 0, env: {}, cwd: nil, live_stream: false, sensitive: false, msystem: nil)
       # Prepend in the calls to bash
       command = [::File.join("#{node['msys2']['install_dir']}", 'usr', 'bin', 'bash.exe'), '-l', '-c']
@@ -60,16 +71,18 @@ module Msys2
       cmd
     end
 
+    # Public: Determines if MSYS2 is installed on the system
+    #
+    # Returns Boolean
     def msys2_installed?
       ::File.directory?("#{node['msys2']['install_dir']}")
     end
 
+    # Public: Determines if MSYS2 should update when the msys2::default recipe is run
+    #
+    # Returns Boolean
     def should_update?
       node['msys2']['auto-update']
-    end
-
-    def username
-      ENV['username']
     end
   end
 end

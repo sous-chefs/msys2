@@ -17,10 +17,9 @@ cookbook_file 'C:/msys2.js' do
   not_if { msys2_installed? }
 end
 
-execute 'install msys' do
-  command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
+powershell_script 'install msys' do
+  command "C:/msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
   not_if { msys2_installed? }
-  provider Chef::Provider::Execute
 end
 
 execute 'ls -la' do
