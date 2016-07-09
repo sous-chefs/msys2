@@ -5,7 +5,9 @@ resource_name :msys2_package
 default_action :install
 
 provides :msys2_package, os: 'windows'
-provides :package, os: 'windows', override: node['msys2']['override_package']
+provides :package, os: 'windows', override: true do |node|
+  node['msys2']['override_package']
+end
 
 property :package, String, name_attribute: true, required: true
 
