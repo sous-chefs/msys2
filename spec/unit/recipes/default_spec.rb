@@ -1,20 +1,89 @@
-#
-# Cookbook Name:: msys
-# Spec:: default
-#
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+require 'chefspec'
 
-require 'spec_helper'
+describe 'msys2::default' do
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
-describe 'msys::default' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
+  #
+  # Core
+  #
+  it 'installs MSYS2' do
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
-    end
+  end
+
+  it 'installed MSYS2 into a designated directory' do
+
+  end
+
+  it 'properly cleaned up the install' do
+
+  end
+
+  #
+  # Package
+  #
+  it 'installed a package' do
+
+  end
+
+  it 'override_package installs a package with "package"' do
+
+  end
+
+  it 'removed a package' do
+
+  end
+
+  it 'override_package removed a package with "package"' do
+
+  end
+
+  it 'verbose echoed Pacman' do
+
+  end
+
+  #
+  # Execute
+  #
+  it 'executes commands' do
+
+  end
+
+  it 'override_execute executes a command with "execute"' do
+
+  end
+
+  it 'checked the return value' do
+
+  end
+
+  it 'set enviromental variables' do
+
+  end
+
+  it 'changed the directory to run the command' do
+
+  end
+
+  it 'streamed output' do
+
+  end
+
+  it 'removed all output when silenced' do
+
+  end
+
+  it 'ran execute from different MSYS2 enviroments' do
+
+  end
+
+  #
+  # Update
+  #
+  it 'ran the update command' do
+
+  end
+
+  it 'auto-update ran the update command' do
+
   end
 end
