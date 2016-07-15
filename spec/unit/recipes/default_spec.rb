@@ -1,89 +1,56 @@
 require 'chefspec'
 
-describe 'msys2::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+RSpec.configure do |config|
+  config.color = true
+  config.platform = 'windows'
+  config.version = '10'
+end
 
-  #
-  # Core
-  #
-  it 'installs MSYS2' do
+context "msys2::default" do
+  context 'MSYS2 not installed' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.override['msys2']['packages'] = ['git', 'tig']
+      end.converge(described_recipe)
+    end
 
+    before(:each) do
+      allow(Dir).to receive(:exist?).with(anything).and_call_original
+      allow(Dir).to receive(:exist?).with('C:/msys64').and_return(false)
+    end
+
+    it 'runs installer' do
+      expect(chef_run).to msys2_installer('install MSYS2')
+    end
+
+    it 'runs updater' do
+      expect(chef_run).to msys2_update('update MSYS2')
+    end
+
+    it 'installs packages from node' do
+      expect(chef_run).to install_msys2_package('git')
+      expect(chef_run).to install_msys2_package('tig')
+    end
   end
 
-  it 'installed MSYS2 into a designated directory' do
+  context 'MSYS2 installed' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.override['msys2']['packages'] = ['git', 'tig']
+      end.converge(described_recipe)
+    end
 
-  end
+    before(:each) do
+      allow(Dir).to receive(:exist?).with(anything).and_call_original
+      allow(Dir).to receive(:exist?).with('C:/msys64').and_return(true)
+    end
 
-  it 'properly cleaned up the install' do
+    it 'does not run installer' do
+      expect(chef_run).to_not msys2_installer('install MSYS2')
+    end
 
-  end
-
-  #
-  # Package
-  #
-  it 'installed a package' do
-
-  end
-
-  it 'override_package installs a package with "package"' do
-
-  end
-
-  it 'removed a package' do
-
-  end
-
-  it 'override_package removed a package with "package"' do
-
-  end
-
-  it 'verbose echoed Pacman' do
-
-  end
-
-  #
-  # Execute
-  #
-  it 'executes commands' do
-
-  end
-
-  it 'override_execute executes a command with "execute"' do
-
-  end
-
-  it 'checked the return value' do
-
-  end
-
-  it 'set enviromental variables' do
-
-  end
-
-  it 'changed the directory to run the command' do
-
-  end
-
-  it 'streamed output' do
-
-  end
-
-  it 'removed all output when silenced' do
-
-  end
-
-  it 'ran execute from different MSYS2 enviroments' do
-
-  end
-
-  #
-  # Update
-  #
-  it 'ran the update command' do
-
-  end
-
-  it 'auto-update ran the update command' do
-
+    it 'runs updater' do
+      expect(chef_run).to msys2_update('update MSYS2')
+    end
   end
 end
