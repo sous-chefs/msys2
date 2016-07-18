@@ -19,16 +19,14 @@ action :run do
 
   # Make sure we turn off the override in order to run this with standard execute
   previous_value = node['msys2']['override_execute']
-  if previous_value
-    node.default['msys2']['override_execute'] = false
-  end
+  node.override['msys2']['override_execute'] = false
 
   execute 'install msys' do
     command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
   end
 
   # Restore it back to the previous value
-  node.default['msys2']['override_execute'] = previous_value
+  node.override['msys2']['override_execute'] = previous_value
 
   file 'C:/msys2.exe' do
     action :delete

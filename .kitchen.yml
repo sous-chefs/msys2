@@ -18,3 +18,5 @@ suites:
       msys2:
         install_dir: 'C:/msys64'
         packages: ['git']
+        override_package: true
+        override_execute: true
