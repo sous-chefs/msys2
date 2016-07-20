@@ -10,6 +10,6 @@ describe 'MSYS2 installation' do
   end
 
   describe command('C:/msys64/usr/bin/bash.exe -l -c "git --version"') do
-    its(:stdout) { should match /git version [0-9.]+/ }
+    its(:stdout) { should match(/git version [0-9.]+/) }
   end
 end

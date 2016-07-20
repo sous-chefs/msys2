@@ -12,9 +12,13 @@ end
 property :package, String, name_attribute: true, required: true
 
 action :install do
-  run_command('pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', "#{package}")
+  msys2_execute "installing package: #{package}" do
+    command ['pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', package]
+  end
 end
 
 action :remove do
-  run_command('pacman', '--remove', '--noconfirm', '--noprogressbar', "#{package}")
+  msys2_execute "removing package: #{package}" do
+    command ['pacman', '--remove', '--noconfirm', '--noprogressbar', package]
+  end
 end

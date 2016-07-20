@@ -7,5 +7,7 @@ default_action :run
 provides :msys2_update, os: 'windows'
 
 action :run do
-    run_command('pacman', '--sync', '--sysupgrade', '--refresh', '--noconfirm', '--noprogressbar')
+  msys2_execute 'update MSYS2' do
+    command ['pacman', '--sync', '--sysupgrade', '--refresh', '--noconfirm', '--noprogressbar']
+  end
 end
