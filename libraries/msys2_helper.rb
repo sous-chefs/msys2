@@ -14,7 +14,7 @@ module Msys2
     #
     # Returns Boolean
     def should_update?
-      node['msys2']['auto-update']
+      node['msys2']['auto_update']
     end
   end
 end
