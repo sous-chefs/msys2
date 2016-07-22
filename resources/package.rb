@@ -1,4 +1,4 @@
-Chef::Resource.send(:include, Msys2::Helper)
+Chef::Resource.send(:include, Msys2::CommandHelper)
 
 resource_name :msys2_package
 

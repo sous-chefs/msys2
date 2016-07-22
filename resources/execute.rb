@@ -1,4 +1,4 @@
-Chef::Resource.send(:include, Msys2::Helper)
+Chef::Resource.send(:include, Msys2::CommandHelper)
 
 resource_name :msys2_execute
 
@@ -12,14 +12,14 @@ end
 property :command, [String, Array], name_attribute: true, required: true
 property :returns, Fixnum, default: 0
 property :environment, Hash, default: {}
-property :cwd, String
+property :cwd, String, default: '/'
 property :live_stream, [true, false], default: false
 property :sensitive, [true, false], default: false
 property :msystem, [:mingw32, :mingw64, :msys], default: node['msys2']['default_env']
 
 action :run do
-  msys_command = generate_command(command, cwd: cwd)
-  msys_env = generate_env(environment, msystem: msystem)
+  msys_command = generate_command(command, cwd: cwd, install_dir: node['msys2']['install_dir'])
+  msys_env = generate_env(environment, msystem: msystem, install_dir: node['msys2']['install_dir'])
 
   previous_value = node['msys2']['override_execute']
   node.override['msys2']['override_execute'] = false
