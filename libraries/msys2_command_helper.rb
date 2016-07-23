@@ -10,9 +10,9 @@ module Msys2
     def generate_command(*args, cwd: nil, install_dir: nil)
       command = [::File.join(install_dir, 'usr', 'bin', 'bash.exe'), '-l', '-c']
       msys_command = if cwd.nil?
-                       ['cd', '/', '&&'] + args
+                       ['cd', "'/'", '&&'] + args
                      else
-                       ['cd', cwd, '&&'] + args
+                       ['cd', "'#{cwd}'", '&&'] + args
                      end
 
       command.push("'#{msys_command.join(' ')}'")

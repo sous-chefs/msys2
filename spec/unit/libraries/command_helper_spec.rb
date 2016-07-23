@@ -10,19 +10,19 @@ describe Msys2::CommandHelper do
 
     it 'default' do
       expect(helper.generate_command('ls -la', cwd: default_dir, install_dir: install_dir)).to eq(
-        "#{install_dir}/usr/bin/bash.exe -l -c 'cd #{default_dir} && ls -la'"
+        "#{install_dir}/usr/bin/bash.exe -l -c 'cd '#{default_dir}' && ls -la'"
       )
     end
 
     it 'cwd' do
       expect(helper.generate_command('ls -la', cwd: '~/', install_dir: install_dir)).to eq(
-        "#{install_dir}/usr/bin/bash.exe -l -c 'cd ~/ && ls -la'"
+        "#{install_dir}/usr/bin/bash.exe -l -c 'cd '~/' && ls -la'"
       )
     end
 
     it 'install_dir' do
       expect(helper.generate_command('ls -la', cwd: default_dir, install_dir: 'C:/msys2')).to eq(
-        "C:/msys2/usr/bin/bash.exe -l -c 'cd #{default_dir} && ls -la'"
+        "C:/msys2/usr/bin/bash.exe -l -c 'cd '#{default_dir}' && ls -la'"
       )
     end
   end
