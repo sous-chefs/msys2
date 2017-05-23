@@ -25,10 +25,11 @@ module Msys2
     # msystem - The MSYS2 environment to run the command in.
     #           Options are: :mingw64, :mingw32, :msys
     def generate_env(env, msystem: nil, install_dir: nil)
-      env[:HOME] = ::File.join(install_dir, 'home', ENV['username'])
-      env[:CHERE_INVOKING] = '1'
-      env[:MSYSTEM] = msystem
-      env
+      new_env = env.dup
+      new_env[:HOME] = ::File.join(install_dir, 'home', ENV['username'])
+      new_env[:CHERE_INVOKING] = '1'
+      new_env[:MSYSTEM] = msystem
+      new_env
     end
   end
 end
