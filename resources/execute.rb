@@ -10,7 +10,7 @@ provides :execute, os: 'windows', override: true do |node|
 end
 
 property :command, [String, Array], name_attribute: true, required: true
-property :returns, Fixnum, default: 0
+property :returns, Integer, default: 0
 property :environment, Hash, default: {}
 property :cwd, String, default: '/'
 property :live_stream, [true, false], default: false
