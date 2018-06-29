@@ -8,7 +8,7 @@ provides :msys2_installer, os: 'windows'
 
 action :run do
   remote_file 'C:/msys2.exe' do
-    source 'http://downloads.sourceforge.net/project/msys2/Base/x86_64/msys2-x86_64-20160205.exe'
+    source 'https://downloads.sourceforge.net/project/msys2/Base/x86_64/msys2-x86_64-20160205.exe'
     action :create
     not_if { ::File.exist?('C:/msys2.exe') }
   end
