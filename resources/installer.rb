@@ -5,6 +5,7 @@ resource_name :msys2_installer
 default_action :run
 
 provides :msys2_installer, os: 'windows'
+unified_mode true
 
 action :run do
   remote_file 'C:/msys2.exe' do

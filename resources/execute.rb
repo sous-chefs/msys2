@@ -5,16 +5,17 @@ resource_name :msys2_execute
 default_action :run
 
 provides :msys2_execute, os: 'windows'
+unified_mode true
 provides :execute, os: 'windows', override: true do |node|
   node['msys2']['override_execute']
 end
 
-property :command, [String, Array], name_attribute: true, required: true
+property :command, [String, Array], name_property: true, required: true
 property :returns, Integer, default: 0
 property :environment, Hash, default: {}
 property :cwd, String, default: '/'
 property :live_stream, [true, false], default: false
-property :sensitive, [true, false], default: false
+
 property :msystem, [:mingw32, :mingw64, :msys], default: node['msys2']['default_env']
 
 action :run do
