@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../../../libraries/msys2_command_helper.rb'
+require_relative '../../../libraries/msys2_command_helper'
 
 describe Msys2::CommandHelper do
   let(:helper) { Class.new.extend(Msys2::CommandHelper) }

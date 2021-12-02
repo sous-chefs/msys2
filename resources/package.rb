@@ -5,11 +5,12 @@ resource_name :msys2_package
 default_action :install
 
 provides :msys2_package, os: 'windows'
+unified_mode true
 provides :package, os: 'windows', override: true do |node|
   node['msys2']['override_package']
 end
 
-property :package, String, name_attribute: true, required: true
+property :package, String, name_property: true, required: true
 
 action :install do
   msys2_execute "installing package: #{package}" do
