@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: msys2
+# Cookbook:: msys2
 # Recipe:: default
 #
-# Copyright (c) 2016 Brian Holtkamp, All Rights Reserved.
+# Copyright:: (c) 2016 Brian Holtkamp, All Rights Reserved.
 
-Chef::Recipe.send(:include, Msys2::Helper)
+Chef::DSL::Recipe.send(:include, Msys2::Helper)
 Chef::Resource.send(:include, Msys2::Helper)
 
 msys2_installer 'install MSYS2' do
