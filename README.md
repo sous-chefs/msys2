@@ -8,11 +8,12 @@ This was built as an alternative for [mingw](https://github.com/chef-cookbooks/m
 
 - Windows
 
-# Recipes
+## Recipes
 
 - default: Will install MSYS2, optionally update all of the packages, and optionally install packages set in the attributes.
 
-# LWRPs
+## Resources
+
 **Bolded** actions are the default actions.
 
 - `msys2_installer`: Installs MSYS2.
@@ -32,7 +33,7 @@ This was built as an alternative for [mingw](https://github.com/chef-cookbooks/m
 - `msys2_update`: Updates all packages in MSYS2.
   - **`:run`**: Updates all packages in MSYS2.
 
-# Attributes
+## Attributes
 
 - `node['msys2']['install_dir']`: The directory to install MSYS2 to.
 - `node['msys2']['auto_update']`: Will automatically update all packages when `msys2::default` is run.
