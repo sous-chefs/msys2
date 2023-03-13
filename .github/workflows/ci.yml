@@ -9,6 +9,8 @@ name: ci
 jobs:
   lint-unit:
     uses: sous-chefs/.github/.github/workflows/lint-unit.yml@2.0.1
+    with:
+      platform: windows-latest
     permissions:
       actions: write
       checks: write
