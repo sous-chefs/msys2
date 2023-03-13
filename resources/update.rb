@@ -1,8 +1,4 @@
-Chef::Resource.send(:include, Msys2::CommandHelper)
-
-resource_name :msys2_update
-
-default_action :run
+unified_mode true
 
 provides :msys2_update, os: 'windows'
 

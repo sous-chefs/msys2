@@ -1,20 +1,16 @@
-Chef::Resource.send(:include, Msys2::CommandHelper)
-
-resource_name :msys2_execute
-
-default_action :run
+unified_mode true
 
 provides :msys2_execute, os: 'windows'
+
 provides :execute, os: 'windows', override: true do |node|
   node['msys2']['override_execute']
 end
 
-property :command, [String, Array], name_attribute: true, required: true
+property :command, [String, Array], name_property: true
 property :returns, Integer, default: 0
 property :environment, Hash, default: {}
 property :cwd, String, default: '/'
 property :live_stream, [true, false], default: false
-property :sensitive, [true, false], default: false
 property :msystem, [:mingw32, :mingw64, :msys], default: node['msys2']['default_env']
 
 action :run do
@@ -33,4 +29,8 @@ action :run do
   end
 
   node.override['msys2']['override_execute'] = previous_value
+end
+
+action_class do
+  include Msys2::CommandHelper
 end

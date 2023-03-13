@@ -1,20 +1,15 @@
-Chef::Resource.send(:include, Msys2::Helper)
-
-resource_name :msys2_installer
-
-default_action :run
+unified_mode true
 
 provides :msys2_installer, os: 'windows'
 
 action :run do
   remote_file 'C:/msys2.exe' do
     source 'https://downloads.sourceforge.net/project/msys2/Base/x86_64/msys2-x86_64-20160205.exe'
-    action :create
-    not_if { ::File.exist?('C:/msys2.exe') }
+    action :create_if_missing
   end
 
   cookbook_file 'C:/msys2.js' do
-    not_if { ::File.exist?('C:/msys2.js') }
+    action :create_if_missing
   end
 
   # Make sure we turn off the override in order to run this with standard execute
@@ -37,4 +32,8 @@ action :run do
     action :delete
     only_if { msys2_installed? && ::File.exist?('C:/msys2.js') }
   end
+end
+
+action_class do
+  include Msys2::Helper
 end
