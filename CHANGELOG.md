@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the msys2 cookbook.
 
-## Unreleased
+## 2.0.4 - *2023-09-04*
 
 ## 2.0.3 - *2023-05-03*
 
