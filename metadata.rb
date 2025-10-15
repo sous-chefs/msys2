@@ -5,7 +5,7 @@ maintainer       'Sous Chefs'
 maintainer_email 'help@sous-chefs.org'
 license          'Apache-2.0'
 description      'Installs/Configures MSYS2'
-version          '2.0.9'
+version          '2.0.10'
 chef_version     '>= 15.3'
 
 supports 'windows'
