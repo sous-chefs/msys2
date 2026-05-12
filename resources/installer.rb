@@ -18,6 +18,7 @@ action :install do
     source new_resource.installer_url
     checksum new_resource.installer_checksum if new_resource.installer_checksum
     action :create
+    not_if { msys2_installed?(new_resource.install_dir) }
   end
 
   file control_script_path do
@@ -45,6 +46,7 @@ action :install do
       }
     JS
     action :create
+    not_if { msys2_installed?(new_resource.install_dir) }
   end
 
   execute 'install msys' do
@@ -71,6 +73,7 @@ action :run do
     source new_resource.installer_url
     checksum new_resource.installer_checksum if new_resource.installer_checksum
     action :create
+    not_if { msys2_installed?(new_resource.install_dir) }
   end
 
   file control_script_path do
@@ -98,6 +101,7 @@ action :run do
       }
     JS
     action :create
+    not_if { msys2_installed?(new_resource.install_dir) }
   end
 
   execute 'install msys' do
