@@ -1,36 +1,131 @@
+# frozen_string_literal: true
+
 unified_mode true
 
 provides :msys2_installer, os: 'windows'
+default_action :install
 
-action :run do
-  remote_file 'C:/msys2.exe' do
-    source 'https://downloads.sourceforge.net/project/msys2/Base/x86_64/msys2-x86_64-20160205.exe'
-    action :create_if_missing
+use '_partial/_install'
+
+property :installer_url, String, default: 'https://repo.msys2.org/distrib/x86_64/msys2-x86_64-latest.exe'
+property :installer_checksum, String
+
+action :install do
+  installer_path = ::File.join(Chef::Config[:file_cache_path], 'msys2-installer.exe')
+  control_script_path = ::File.join(Chef::Config[:file_cache_path], 'msys2-install.js')
+
+  remote_file installer_path do
+    source new_resource.installer_url
+    checksum new_resource.installer_checksum if new_resource.installer_checksum
+    action :create
   end
 
-  cookbook_file 'C:/msys2.js' do
-    action :create_if_missing
-  end
+  file control_script_path do
+    content <<~JS
+      function Controller() { }
 
-  # Make sure we turn off the override in order to run this with standard execute
-  previous_value = node['msys2']['override_execute']
-  node.override['msys2']['override_execute'] = false
+      Controller.prototype.IntroductionPageCallback = function() {
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.TargetDirectoryPageCallback = function() {
+          var page = gui.pageWidgetByObjectName("TargetDirectoryPage");
+          page.TargetDirectoryLineEdit.setText(installer.value("dir"));
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.StartMenuDirectoryPageCallback = function() {
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.FinishedPageCallback = function() {
+          var page = gui.pageWidgetByObjectName("FinishedPage");
+          page.RunItCheckBox.checked = false;
+          gui.clickButton(buttons.FinishButton);
+      }
+    JS
+    action :create
+  end
 
   execute 'install msys' do
-    command "msys2.exe --platform minimal --script msys2.js dir=#{node['msys2']['install_dir']}"
+    command "\"#{installer_path}\" --platform minimal --script \"#{control_script_path}\" dir=#{new_resource.install_dir}"
+    not_if { msys2_installed?(new_resource.install_dir) }
   end
 
-  # Restore it back to the previous value
-  node.override['msys2']['override_execute'] = previous_value
-
-  file 'C:/msys2.exe' do
+  file installer_path do
     action :delete
-    only_if { msys2_installed? && ::File.exist?('C:/msys2.exe') }
+    only_if { msys2_installed?(new_resource.install_dir) }
   end
 
-  file 'C:/msys2.js' do
+  file control_script_path do
     action :delete
-    only_if { msys2_installed? && ::File.exist?('C:/msys2.js') }
+    only_if { msys2_installed?(new_resource.install_dir) }
+  end
+end
+
+action :run do
+  installer_path = ::File.join(Chef::Config[:file_cache_path], 'msys2-installer.exe')
+  control_script_path = ::File.join(Chef::Config[:file_cache_path], 'msys2-install.js')
+
+  remote_file installer_path do
+    source new_resource.installer_url
+    checksum new_resource.installer_checksum if new_resource.installer_checksum
+    action :create
+  end
+
+  file control_script_path do
+    content <<~JS
+      function Controller() { }
+
+      Controller.prototype.IntroductionPageCallback = function() {
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.TargetDirectoryPageCallback = function() {
+          var page = gui.pageWidgetByObjectName("TargetDirectoryPage");
+          page.TargetDirectoryLineEdit.setText(installer.value("dir"));
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.StartMenuDirectoryPageCallback = function() {
+          gui.clickButton(buttons.NextButton);
+      }
+
+      Controller.prototype.FinishedPageCallback = function() {
+          var page = gui.pageWidgetByObjectName("FinishedPage");
+          page.RunItCheckBox.checked = false;
+          gui.clickButton(buttons.FinishButton);
+      }
+    JS
+    action :create
+  end
+
+  execute 'install msys' do
+    command "\"#{installer_path}\" --platform minimal --script \"#{control_script_path}\" dir=#{new_resource.install_dir}"
+    not_if { msys2_installed?(new_resource.install_dir) }
+  end
+
+  file installer_path do
+    action :delete
+    only_if { msys2_installed?(new_resource.install_dir) }
+  end
+
+  file control_script_path do
+    action :delete
+    only_if { msys2_installed?(new_resource.install_dir) }
+  end
+end
+
+action :remove do
+  execute 'uninstall msys' do
+    command "\"#{::File.join(new_resource.install_dir, 'uninstall.exe')}\" pr --confirm-command"
+    only_if { ::File.exist?(::File.join(new_resource.install_dir, 'uninstall.exe')) }
+  end
+
+  directory new_resource.install_dir do
+    recursive true
+    action :delete
+    only_if { ::Dir.exist?(new_resource.install_dir) }
   end
 end
 

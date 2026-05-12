@@ -33,6 +33,7 @@ jobs:
       - name: Install Cinc Workstation
         uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
       - name: Test Kitchen
+        shell: pwsh
         env:
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.exec.yml

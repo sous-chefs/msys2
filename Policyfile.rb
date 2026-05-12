@@ -2,6 +2,7 @@
 
 name 'msys2'
 
-run_list 'msys2::default'
+run_list 'test::default'
 
 cookbook 'msys2', path: '.'
+cookbook 'test', path: './test/cookbooks/test'
