@@ -7,7 +7,7 @@ default_action :install
 
 use '_partial/_install'
 
-property :installer_url, String, default: 'https://repo.msys2.org/distrib/x86_64/msys2-x86_64-latest.exe'
+property :installer_url, String, default: 'https://repo.msys2.org/distrib/msys2-x86_64-latest.exe'
 property :installer_checksum, String
 
 action :install do

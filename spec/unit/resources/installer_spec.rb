@@ -17,7 +17,11 @@ describe 'msys2_installer' do
       msys2_installer 'default'
     end
 
-    it { is_expected.to create_remote_file("#{Chef::Config[:file_cache_path]}/msys2-installer.exe") }
+    it do
+      is_expected.to create_remote_file("#{Chef::Config[:file_cache_path]}/msys2-installer.exe").with(
+        source: 'https://repo.msys2.org/distrib/msys2-x86_64-latest.exe'
+      )
+    end
     it { is_expected.to create_file("#{Chef::Config[:file_cache_path]}/msys2-install.js") }
 
     it do
