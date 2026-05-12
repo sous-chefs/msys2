@@ -8,6 +8,7 @@ transport:
 provisioner:
   name: chef_infra
   product_name: chef
+  chef_client_path: chef-client.bat
   install_strategy: skip
   chef_omnibus_install: false
 
