@@ -1,7 +1,15 @@
 ---
-driver: { name: exec }
-transport: { name: exec }
+driver:
+  name: exec
+
+transport:
+  name: exec
+
+provisioner:
+  name: chef_infra
+  product_name: chef
+  install_strategy: skip
+  chef_omnibus_install: false
 
 platforms:
-  - name: macos-latest
   - name: windows-latest
