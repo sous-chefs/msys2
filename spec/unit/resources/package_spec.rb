@@ -6,7 +6,13 @@ describe 'msys2_package' do
   step_into :msys2_package
   platform 'windows', '2019'
 
+  package_query = "C:/msys64/usr/bin/bash.exe -l -c 'cd '/' && pacman --query git'"
+
   context 'install action' do
+    before do
+      stub_command(package_query).and_return(false)
+    end
+
     recipe do
       msys2_package 'git'
     end
@@ -21,6 +27,10 @@ describe 'msys2_package' do
   end
 
   context 'remove action' do
+    before do
+      stub_command(package_query).and_return(true)
+    end
+
     recipe do
       msys2_package 'git' do
         action :remove
