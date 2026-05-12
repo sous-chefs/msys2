@@ -1,21 +1,35 @@
+# frozen_string_literal: true
+
 unified_mode true
 
 provides :msys2_package, os: 'windows'
 
-provides :package, os: 'windows', override: true do |node|
-  node['msys2']['override_package']
-end
-
 property :package, String, name_property: true
+property :install_dir, String, default: 'C:/msys64'
+property :msystem, [:mingw32, :mingw64, :msys], default: :msys
 
 action :install do
-  msys2_execute "installing package: #{package}" do
-    command ['pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', package]
+  query_command = generate_command(['pacman', '--query', new_resource.package], install_dir: new_resource.install_dir)
+
+  msys2_execute "installing package: #{new_resource.package}" do
+    command ['pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', new_resource.package]
+    install_dir new_resource.install_dir
+    msystem new_resource.msystem
+    not_if query_command
   end
 end
 
 action :remove do
-  msys2_execute "removing package: #{package}" do
-    command ['pacman', '--remove', '--noconfirm', '--noprogressbar', package]
+  query_command = generate_command(['pacman', '--query', new_resource.package], install_dir: new_resource.install_dir)
+
+  msys2_execute "removing package: #{new_resource.package}" do
+    command ['pacman', '--remove', '--noconfirm', '--noprogressbar', new_resource.package]
+    install_dir new_resource.install_dir
+    msystem new_resource.msystem
+    only_if query_command
   end
+end
+
+action_class do
+  include Msys2::CommandHelper
 end
