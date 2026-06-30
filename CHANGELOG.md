@@ -2,6 +2,22 @@
 
 This file is used to list changes made in each version of the msys2 cookbook.
 
+## [3.0.0](https://github.com/sous-chefs/msys2/compare/v2.0.10...v3.0.0) (2026-06-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate msys2 to custom resources ([#37](https://github.com/sous-chefs/msys2/issues/37))
+
+### Features
+
+* migrate msys2 to custom resources ([#37](https://github.com/sous-chefs/msys2/issues/37)) ([7775441](https://github.com/sous-chefs/msys2/commit/777544176d8952f79c32c14e5443498778059efa))
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#32](https://github.com/sous-chefs/msys2/issues/32)) ([5b1bac0](https://github.com/sous-chefs/msys2/commit/5b1bac088f42c66900e1ade30ce612e245098146))
+
 ## [2.0.10](https://github.com/sous-chefs/msys2/compare/2.0.9...v2.0.10) (2025-10-15)
 
 
