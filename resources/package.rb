@@ -9,13 +9,13 @@ end
 property :package, String, name_property: true
 
 action :install do
-  msys2_execute "installing package: #{package}" do
-    command ['pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', package]
+  msys2_execute "installing package: #{new_resource.package}" do
+    command ['pacman', '--sync', '--needed', '--noconfirm', '--noprogressbar', new_resource.package]
   end
 end
 
 action :remove do
-  msys2_execute "removing package: #{package}" do
-    command ['pacman', '--remove', '--noconfirm', '--noprogressbar', package]
+  msys2_execute "removing package: #{new_resource.package}" do
+    command ['pacman', '--remove', '--noconfirm', '--noprogressbar', new_resource.package]
   end
 end
