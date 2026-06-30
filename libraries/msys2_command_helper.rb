@@ -29,7 +29,7 @@ module Msys2
     #           Options are: :mingw64, :mingw32, :msys
     def generate_env(env, msystem: nil, install_dir: nil)
       new_env = env.dup
-      new_env[:HOME] = ::File.join(install_dir, 'home', ENV['USERNAME'] || ENV['USER'] || 'Administrator')
+      new_env[:HOME] = ::File.join(install_dir, 'home', ENV['USERNAME'] || ENV['username'] || ENV['USER'] || 'Administrator')
       new_env[:CHERE_INVOKING] = '1'
       new_env[:MSYSTEM] = msystem
       new_env
