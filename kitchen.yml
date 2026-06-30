@@ -1,10 +1,16 @@
 ---
 driver:
-  name: vagrant
+  name: exec
+
+transport:
+  name: exec
 
 provisioner:
   name: chef_infra
-  product_name: chef
+  product_name: cinc
+  install_strategy: skip
+  chef_client_path: chef-client
+  policyfile_path: Policyfile.rb
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
@@ -14,19 +20,14 @@ verifier:
   name: inspec
 
 platforms:
-  - name: windows-2012r2
-    driver:
-      box: tas50/windows_2012r2
-  - name: windows-2016
-    driver_config:
-      box: tas50/windows_2016
-  - name: windows-2019
-    driver_config:
-      box: tas50/windows_2019
+  - name: windows-latest
 suites:
   - name: default
     run_list:
       - recipe[msys2::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default
     attributes:
       msys2:
         install_dir: "C:/msys64"
