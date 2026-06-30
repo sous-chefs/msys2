@@ -21,17 +21,17 @@ verifier:
 
 platforms:
   - name: windows-latest
+
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
+
+x-verifiers:
+  default: &default_verifier
+    inspec_tests:
+      - path: test/integration/default
+
 suites:
   - name: default
-    run_list:
-      - recipe[msys2::default]
-    verifier:
-      inspec_tests:
-        - test/integration/default
-    attributes:
-      msys2:
-        auto_update: false
-        install_dir: "C:/msys64"
-        packages: ["git"]
-        override_package: true
-        override_execute: true
+    run_list: *default_run_list
+    verifier: *default_verifier

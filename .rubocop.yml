@@ -1,2 +1,3 @@
-LineLength:
+---
+Layout/LineLength:
   Max: 120

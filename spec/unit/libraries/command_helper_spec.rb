@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require_relative '../../../libraries/msys2_command_helper'
 
@@ -28,13 +30,11 @@ describe Msys2::CommandHelper do
   end
 
   describe '#generate_env' do
-    let(:user) { ENV.fetch('username', 'runner') }
+    let(:user) { ENV['USERNAME'] || ENV['username'] || ENV['USER'] || 'Administrator' }
     let(:home) { "#{install_dir}/home/#{user}" }
     let(:msystem) { :msys }
 
     it 'default' do
-      allow(ENV).to receive(:[]).with('username').and_return(user)
-
       expect(helper.generate_env({}, msystem: msystem, install_dir: install_dir)).to include(
         HOME: home,
         CHERE_INVOKING: '1',
@@ -43,8 +43,6 @@ describe Msys2::CommandHelper do
     end
 
     it 'home' do
-      allow(ENV).to receive(:[]).with('username').and_return(user)
-
       expect(helper.generate_env({}, msystem: msystem, install_dir: 'C:/msys2')).to include(
         HOME: "C:/msys2/home/#{user}",
         CHERE_INVOKING: '1',
@@ -53,8 +51,6 @@ describe Msys2::CommandHelper do
     end
 
     it 'msystem' do
-      allow(ENV).to receive(:[]).with('username').and_return(user)
-
       expect(helper.generate_env({}, msystem: :mingw32, install_dir: install_dir)).to include(
         HOME: home,
         CHERE_INVOKING: '1',
