@@ -1,0 +1,9 @@
+---
+name: default
+title: MSYS2 default integration profile
+maintainer: Sous Chefs
+copyright: Sous Chefs
+copyright_email: help@sous-chefs.org
+license: Apache-2.0
+summary: Verifies the default MSYS2 cookbook installation
+version: 0.1.0

@@ -1,0 +1,17 @@
+control 'msys2-default' do
+  impact 1.0
+  title 'MSYS2 is installed with the requested package'
+  desc 'Verifies MSYS2 installed under the default directory and git is available through bash.'
+
+  describe file('C:/msys64') do
+    it { should be_directory }
+  end
+
+  describe file('C:/msys64/usr/bin/bash.exe') do
+    it { should exist }
+  end
+
+  describe command('C:/msys64/usr/bin/bash.exe -l -c "git --version"') do
+    its('stdout') { should match(/git version [0-9.]+/) }
+  end
+end

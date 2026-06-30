@@ -1,6 +1,6 @@
 name 'msys2'
-source_url       'https://www.github.com/sous-chefs/msys2'
-issues_url       'https://www.github.com/sous-chefs/msys2/issues'
+source_url       'https://github.com/sous-chefs/msys2'
+issues_url       'https://github.com/sous-chefs/msys2/issues'
 maintainer       'Sous Chefs'
 maintainer_email 'help@sous-chefs.org'
 license          'Apache-2.0'

@@ -14,8 +14,8 @@ property :live_stream, [true, false], default: false
 property :msystem, [:mingw32, :mingw64, :msys], default: node['msys2']['default_env']
 
 action :run do
-  msys_command = generate_command(command, cwd: cwd, install_dir: node['msys2']['install_dir'])
-  msys_env = generate_env(environment, msystem: msystem, install_dir: node['msys2']['install_dir'])
+  msys_command = generate_command(new_resource.command, cwd: new_resource.cwd, install_dir: node['msys2']['install_dir'])
+  msys_env = generate_env(new_resource.environment, msystem: new_resource.msystem, install_dir: node['msys2']['install_dir'])
 
   previous_value = node['msys2']['override_execute']
   node.override['msys2']['override_execute'] = false

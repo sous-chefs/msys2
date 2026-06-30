@@ -18,11 +18,11 @@ context 'msys2::default' do
       allow(Dir).to receive(:exist?).with(anything).and_call_original
       allow(Dir).to receive(:exist?).with('C:/msys64').and_return(false)
 
-      expect(chef_run).to msys2_installer('install MSYS2')
+      expect(chef_run).to run_msys2_installer('install MSYS2')
     end
 
     it 'runs updater' do
-      expect(chef_run).to msys2_update('update MSYS2')
+      expect(chef_run).to run_msys2_update('update MSYS2')
     end
 
     it 'installs packages from node' do
@@ -42,11 +42,11 @@ context 'msys2::default' do
       allow(Dir).to receive(:exist?).with(anything).and_call_original
       allow(Dir).to receive(:exist?).with('C:/msys64').and_return(true)
 
-      expect(chef_run).to_not msys2_installer('install MSYS2')
+      expect(chef_run).to_not run_msys2_installer('install MSYS2')
     end
 
     it 'runs updater' do
-      expect(chef_run).to msys2_update('update MSYS2')
+      expect(chef_run).to run_msys2_update('update MSYS2')
     end
   end
 end
